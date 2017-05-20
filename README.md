@@ -7,6 +7,12 @@ Briefly, Zshef is alike Chef.  But Zshef does not need ruby.
 
 # Installation
 
+## CLI
+
+```sh
+$ curl https://raw.githubusercontent.com/yasuhiroki/zshef/master/install.sh | sh
+```
+
 ## Zplug
 
 ```sh
