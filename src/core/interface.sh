@@ -52,28 +52,15 @@ function __zshef::core::interface::runner() {
     for f in $(__zshef::core::interface::selector ${@})
     do
       (
-        zshef::util::log::header "Run ${f} zshef::${cmd}"
-        # TODO: Delete previous functions
+        zshef::util::mng::unset "${cmd}"
         source $f
-        zshef::${cmd}
-        [ $? != 0 ] && {
-          zshef::util::log::error "Error ${f} zshef::${cmd}"
-          return 1
-        }
+        zshef::util::log::header "Run ${f}"
+        __zshef::core::interface::run::function "zshef::${cmd}"
+
         if zshef::util::os::is_osx; then
-          zshef::util::log::header "Run ${f} zshef::${cmd}::osx"
-          zshef::${cmd}::osx
-          [ $? != 0 ] && {
-            zshef::util::log::error "Error ${f} zshef::${cmd}::osx"
-            return 1
-          }
+          __zshef::core::interface::run::function "zshef::${cmd}::osx"
         elif zshef::util::os::is_debian; then
-          zshef::util::log::header "Run ${f} zshef::${cmd}::debian"
-          zshef::${cmd}::debian
-          [ $? != 0 ] && {
-            zshef::util::log::error "Error ${f} zshef::${cmd}::debian"
-            return 1
-          }
+          __zshef::core::interface::run::function "zshef::${cmd}::debian"
         fi
         return 0
       )
@@ -105,4 +92,18 @@ function __zshef::core::interface::selector() {
   done
   echo ${rtn[@]}
   return 0
+}
+
+function __zshef::core::interface::run::function() {
+  local fn=${1}
+  if zshef::util::mng::is_defined ${fn}; then
+    zshef::util::log::debug "${fn}"
+    ${fn}
+    [ $? != 0 ] && {
+      zshef::util::log::error "Error ${fn}"
+      return 1
+    }
+  else
+    zshef::util::log::debug "Skip ${fn}"
+  fi
 }
