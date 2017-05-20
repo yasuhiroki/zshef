@@ -2,6 +2,7 @@
 
 function zshef::core::interface::command() {
   local cmd="$1"
+  shift
 
   case "$cmd" in
     init)
@@ -9,14 +10,14 @@ function zshef::core::interface::command() {
       return 1
       ;;
     run)
-      zshef::core::interface::install $(pwd)
-      zshef::core::interface::update $(pwd)
+      zshef::core::interface::install $(pwd) "${@}"
+      zshef::core::interface::update $(pwd) "${@}"
       ;;
     install)
-      zshef::core::interface::install $(pwd)
+      zshef::core::interface::install $(pwd) "${@}"
       ;;
     update)
-      zshef::core::interface::update $(pwd)
+      zshef::core::interface::update $(pwd) "${@}"
       ;;
     *)
       echo "No support command"
@@ -26,18 +27,18 @@ function zshef::core::interface::command() {
 }
 
 function zshef::core::interface::install() {
-  __zshef::core::interface::runner "$1" "install"
+  __zshef::core::interface::runner "install" $@
 }
 
 function zshef::core::interface::update() {
-  __zshef::core::interface::runner "$1" "update"
+  __zshef::core::interface::runner "update" $@
 }
 
 function __zshef::core::interface::runner() {
-  local work_dir="$1"
+  local cmd="$1"
+  local work_dir="$2"
   [ -d "${work_dir}" ] || return 1
-
-  local cmd="$2"
+  shift 2
 
   zshef::util::log::header "${cmd} start"
   (
@@ -47,7 +48,8 @@ function __zshef::core::interface::runner() {
     [ -d ./cookbooks ] || return 1
     zshef::util::log::debugs $(ls ./cookbooks/*.zshef)
 
-    for f in ./cookbooks/*.zshef
+    test -n "${1}" && zshef::util::log::debug "Specify cookbooks by ${@}"
+    for f in $(__zshef::core::interface::selector ${@})
     do
       (
         zshef::util::log::header "Run ${f} zshef::${cmd}"
@@ -84,4 +86,23 @@ function __zshef::core::interface::runner() {
   local rtn=$?
   zshef::util::log::header "${cmd} end"
   return ${rtn}
+}
+
+function __zshef::core::interface::selector() {
+  test -z "${1}" && {
+    echo ./cookbooks/*.zshef
+    return 0
+  }
+
+  local rtn=()
+  : # Need any command ???
+  for f in ./cookbooks/*.zshef
+  do
+    for l in ${@}
+    do
+      [[ ${f} =~ ${l}.zshef ]] && rtn+=(${f})
+    done
+  done
+  echo ${rtn[@]}
+  return 0
 }

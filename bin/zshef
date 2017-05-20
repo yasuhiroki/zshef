@@ -3,12 +3,11 @@
 function zshef(){
     local arg="$1"
 
-
     case "$arg" in
         init | run | install | update)
             shift
             zshef::core::interface::command \
-                "$arg"
+                "$arg" "$@"
             ;;
 
         *)
