@@ -65,6 +65,13 @@ function __zshef::core::interface::runner() {
             zshef::util::log::error "Error ${f} zshef::${cmd}::osx"
             return 1
           }
+        elif zshef::util::os::is_debian; then
+          zshef::util::log::header "Run ${f} zshef::${cmd}::debian"
+          zshef::${cmd}::debian
+          [ $? != 0 ] && {
+            zshef::util::log::error "Error ${f} zshef::${cmd}::debian"
+            return 1
+          }
         fi
         return 0
       )
