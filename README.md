@@ -7,6 +7,14 @@ Briefly, Zshef is alike Chef.  But Zshef does not need ruby.
 
 # Installation
 
+## Zplug
+
+```sh
+zplug "yasuhiroki/zshef", use:init.sh
+```
+
+## Manual
+
 ```sh
 $ export ZSHEF_HOME=/path/to/.zshef
 $ git clone https://github.com/yasuhiroki/zshef $ZSHEF_HOME
