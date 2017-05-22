@@ -64,7 +64,7 @@ function __zshef::core::interface::runner() {
         fi
         return 0
       )
-      [ $? != 0 ] && {
+      [ $? = 0 ] || {
         zshef::util::log::error "Error ${f} zshef::${cmd}"
         return 1
       }
