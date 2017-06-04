@@ -12,7 +12,7 @@ $0 <command>
 EOH
 }
 
-for f in ${${(%):-%N}:A:h}/*/*.sh
+for f in ${${(%):-%N}:A:h}/*/**/*.sh
 do
   source $f
 done
