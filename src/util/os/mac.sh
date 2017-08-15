@@ -9,7 +9,7 @@ function zshef::util::os::mac::install() {
 }
 
 function zshef::util::os::mac::update() {
-  if $(_zshef::util::os::mac::install::cmd) outdated | grep -sq "^$1 "; then
+  if $(_zshef::util::os::mac::install::cmd) outdated | grep -sq "^$1"; then
     $(_zshef::util::os::mac::install::cmd) upgrade $1
   else
     echo "$1 is already updated"
