@@ -6,8 +6,7 @@ function zshef::core::interface::command() {
 
   case "$cmd" in
     init)
-      echo "No implemented yet"
-      return 1
+      zshef::core::interface::init $(pwd) "${@}"
       ;;
     run)
       zshef::core::interface::install $(pwd) "${@}"
@@ -24,6 +23,26 @@ function zshef::core::interface::command() {
       return 1
       ;;
   esac
+}
+
+function zshef::core::interface::init() {
+  local work_dir="$1"
+  [ -d "${work_dir}" ] || return 1
+  (
+    cd ${work_dir}
+    zshef::util::log::echo "Create directory"
+    mkdir -p cookbooks
+    zshef::util::log::echo "Create sample zshef file"
+cat <<EOH > cookbooks/sample.zshef
+function zshef::install() {
+  echo "Install something"
+}
+
+function zshef::update() {
+  echo "Update something"
+}
+EOH
+    )
 }
 
 function zshef::core::interface::install() {

@@ -5,10 +5,10 @@ cat <<-EOH
 $0 <command>
 
 <command>
-    init    : TBD
-    install : Run install function (no update)
-    update  : Run update function (no install)
-    run     : Run install/update function
+    init    : Create directories for zshef
+    install : Run install function (no run update)
+    update  : Run update function (no run install)
+    run     : Run install and update function
 EOH
 }
 

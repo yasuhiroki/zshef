@@ -42,7 +42,6 @@ $ source $ZSHEF_HOME/init.sh
 ## CLI
 
 ```sh
-# TBD
 $ zshef init
 ```
 
