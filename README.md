@@ -57,6 +57,10 @@ $ zshef install [files...]
 $ zshef update [files...]
 ```
 
+```sh
+$ zshef config [files...]
+```
+
 ## Zshef file
 
 Zshef runs \*.zshef files in working directory.
@@ -76,6 +80,13 @@ function zshef::update() {
 ```
 
 ```sh
+# Write config script
+function zshef::config() {
+
+}
+```
+
+```sh
 # Write install script fo mac
 function zshef::install::osx() {
 
@@ -90,22 +101,27 @@ sample for git install/update zshef file
 #!/usr/bin/env zsh
 
 function zshef::install() {
-    :
+  :
 }
 
 function zshef::install::osx() {
   zshef::util::mng::is_installed "git" || {
     zshef::util::os::mac::install "git"
   }
+}
 
 function zshef::update() {
-    :
+  :
 }
 
 function zshef::update::osx() {
   zshef::util::mng::is_installed "git" && {
     zshef::util::os::mac::update "git"
   }
+}
+
+function zshef::config() {
+  git config --global push.default simple
 }
 ```
 
@@ -118,13 +134,17 @@ cookbooks
 $ ls ./cookbooks
 git.zshef
 
-$ zshef install
-[11:21:50][ZSHEF] install start
-[11:21:50][ZSHEF][DEBUG] working directory /Users/yasuhiroki/zshef-sample/
-[11:21:50][ZSHEF][DEBUG] ./cookbooks/git.zshef
-[11:21:50][ZSHEF] Run ./cookbooks/git.zshef zshef::install
-[11:21:50][ZSHEF] Run ./cookbooks/git.zshef zshef::install::osx
-[11:21:50][ZSHEF] install end
+$ zshef run
+[10:27:21][ZSHEF] install start
+[10:27:21][ZSHEF] Run ./cookbooks/git.zshef
+[10:27:21][ZSHEF] install end
+[10:27:21][ZSHEF] update start
+[10:27:21][ZSHEF] Run ./cookbooks/git.zshef
+git is already updated
+[10:27:23][ZSHEF] update end
+[10:27:23][ZSHEF] config start
+[10:27:23][ZSHEF] Run ./cookbooks/git.zshef
+[10:27:23][ZSHEF] config end
 ```
 
 # Development
