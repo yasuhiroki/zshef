@@ -11,9 +11,13 @@ function zshef::core::interface::command() {
     run)
       zshef::core::interface::install $(pwd) "${@}"
       zshef::core::interface::update $(pwd) "${@}"
+      zshef::core::interface::config $(pwd) "${@}"
       ;;
     install)
       zshef::core::interface::install $(pwd) "${@}"
+      ;;
+    config)
+      zshef::core::interface::config $(pwd) "${@}"
       ;;
     update)
       zshef::core::interface::update $(pwd) "${@}"
@@ -51,6 +55,10 @@ function zshef::core::interface::install() {
 
 function zshef::core::interface::update() {
   __zshef::core::interface::runner "update" $@
+}
+
+function zshef::core::interface::config() {
+  __zshef::core::interface::runner "config" $@
 }
 
 function __zshef::core::interface::runner() {

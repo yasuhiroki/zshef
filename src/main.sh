@@ -2,13 +2,14 @@
 
 function zshef::help(){
 cat <<-EOH
-$0 <command>
+zshef <command>
 
 <command>
     init    : Create directories for zshef
-    install : Run install function (no run update)
-    update  : Run update function (no run install)
-    run     : Run install and update function
+    install : Run install function
+    update  : Run update function
+    config  : Run config function
+    run     : Run install, update and config function
 EOH
 }
 

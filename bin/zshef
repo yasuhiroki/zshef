@@ -4,7 +4,7 @@ function zshef(){
     local arg="$1"
 
     case "$arg" in
-        init | run | install | update)
+        init | run | install | update | config)
             shift
             zshef::core::interface::command \
                 "$arg" "$@"
