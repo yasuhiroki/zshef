@@ -94,18 +94,18 @@ function zshef::install() {
 }
 
 function zshef::install::osx() {
-    zshef::util::mng::is_installed "git" || {
-        brew install git
-    }
+  zshef::util::mng::is_installed "git" || {
+    zshef::util::os::mac::install "git"
+  }
 
 function zshef::update() {
     :
 }
 
 function zshef::update::osx() {
-    zshef::util::mng::is_installed "git" && {
-        brew upgrade git
-    }
+  zshef::util::mng::is_installed "git" && {
+    zshef::util::os::mac::update "git"
+  }
 }
 ```
 
