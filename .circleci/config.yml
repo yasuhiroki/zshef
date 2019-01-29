@@ -1,0 +1,22 @@
+version: 2
+
+jobs:
+  test:
+    macos:
+      xcode: "9.0"
+    steps:
+      - checkout
+      - run:
+          name: Setup
+          command: |
+            brew install zsh
+      - run:
+          name: Run tests
+          command: |
+            zsh test.sh
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
