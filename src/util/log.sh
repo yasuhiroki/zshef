@@ -38,7 +38,7 @@ function zshef::util::log::debugs() {
 }
 
 function zshef::util::log::error() {
-  echo "$(__zshef::util::log::prefix)[ERROR] \e[34m$@\e[m"
+  echo "$(__zshef::util::log::prefix)\e[31m[ERROR] $@\e[m"
 }
 
 function zshef::util::log::errors() {
