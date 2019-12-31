@@ -12,7 +12,7 @@ function zshef::util::mng::is_defined() {
 
 function zshef::util::mng::unset() {
   local cmd="${1}"
-  for fn in zshef::${cmd}{,::osx,::debian}
+  for fn in zshef::${cmd}{,::osx,::debian}{,::before,::after}
   do
     zshef::util::mng::is_defined ${fn} && unset -f ${fn}
   done
