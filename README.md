@@ -63,7 +63,7 @@ $ zshef config [files...]
 
 ## Zshef file
 
-Zshef runs \*.zshef files in working directory.
+zshef runs \*.zshef files in `cookbooks` directory.
 
 ```sh
 # Write install script
