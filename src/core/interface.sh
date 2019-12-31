@@ -78,29 +78,17 @@ function __zshef::core::interface::runner() {
     test -n "${1}" && zshef::util::log::debug "Specify cookbooks by ${@}"
     for f in $(__zshef::core::interface::selector ${@})
     do
-      (
-        zshef::util::mng::unset "${cmd}"
-        source $f
-        zshef::util::log::header "Run ${f}"
-        __zshef::core::interface::run::function "zshef::${cmd}::before"
-        __zshef::core::interface::run::function "zshef::${cmd}"
-
-        if zshef::util::os::is_osx; then
-          __zshef::core::interface::run::function "zshef::${cmd}::osx::before"
-          __zshef::core::interface::run::function "zshef::${cmd}::osx"
-          __zshef::core::interface::run::function "zshef::${cmd}::osx::after"
-        elif zshef::util::os::is_debian; then
-          __zshef::core::interface::run::function "zshef::${cmd}::debian::before"
-          __zshef::core::interface::run::function "zshef::${cmd}::debian"
-          __zshef::core::interface::run::function "zshef::${cmd}::debian::after"
-        fi
-        __zshef::core::interface::run::function "zshef::${cmd}::after"
-        return 0
-      )
-      [ $? = 0 ] || {
+      __zshef::core::interface::run::cookbook "${cmd}" "${f}" || {
         zshef::util::log::error "Error ${f} zshef::${cmd}"
         return 1
       }
+      for f2 in $(__zshef::core::interface::selector::subdir $(basename -s '.zshef' "${f}"))
+      do
+        __zshef::core::interface::run::cookbook "${cmd}" "${f2}" || {
+          zshef::util::log::error "Error ${f2} zshef::${cmd}"
+          return 1
+        }
+      done
     done
   )
   local rtn=$?
@@ -125,6 +113,39 @@ function __zshef::core::interface::selector() {
   done
   echo ${rtn[@]}
   return 0
+}
+
+function __zshef::core::interface::selector::subdir() {
+  local base="$1"
+  test -d ./cookbooks/${base} || {
+    return 0
+  }
+  echo ./cookbooks/${base}/*.zshef
+  return 0
+}
+
+function __zshef::core::interface::run::cookbook() {
+  local cmd="$1"
+  local f="$2"
+  (
+    zshef::util::mng::unset "${cmd}"
+    source "$f"
+    zshef::util::log::header "Run ${f}"
+    __zshef::core::interface::run::function "zshef::${cmd}::before"
+    __zshef::core::interface::run::function "zshef::${cmd}"
+
+    if zshef::util::os::is_osx; then
+      __zshef::core::interface::run::function "zshef::${cmd}::osx::before"
+      __zshef::core::interface::run::function "zshef::${cmd}::osx"
+      __zshef::core::interface::run::function "zshef::${cmd}::osx::after"
+    elif zshef::util::os::is_debian; then
+      __zshef::core::interface::run::function "zshef::${cmd}::debian::before"
+      __zshef::core::interface::run::function "zshef::${cmd}::debian"
+      __zshef::core::interface::run::function "zshef::${cmd}::debian::after"
+    fi
+    __zshef::core::interface::run::function "zshef::${cmd}::after"
+    return 0
+  )
 }
 
 function __zshef::core::interface::run::function() {
