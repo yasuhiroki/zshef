@@ -104,7 +104,7 @@ function __zshef::core::interface::selector() {
 
   local rtn=()
   : # Need any command ???
-  for f in ./cookbooks/*.zshef
+  for f in ./cookbooks/**/*.zshef
   do
     for l in ${@}
     do
