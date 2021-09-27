@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 function _zshef::util::lang::go::install::cmd() {
-    echo "${ZSHEF_GO_INSTALL_CMD:-go get}"
+    echo "${ZSHEF_GO_INSTALL_CMD:-go install}"
 }
 
 function zshef::util::lang::go::install() {
@@ -14,5 +14,5 @@ function zshef::util::lang::go::install() {
 }
 
 function zshef::util::lang::go::update() {
-    zshef::util::lang::go::install -u "$1"
+    zshef::util::lang::go::install "$1"
 }
