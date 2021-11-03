@@ -16,3 +16,6 @@ function zshef::util::os::mac::update() {
   fi
 }
 
+function zshef::util::os::mac::is_installed() {
+  $(_zshef::util::os::mac::install::cmd) list $1 >& /dev/null
+}
